@@ -1,7 +1,7 @@
 {
     "app-id" : "io.github.kirukomaru11.Soundboard",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "master",
+    "runtime-version" : "51",
     "sdk" : "org.gnome.Platform",
     "command" : "soundboard",
     "finish-args" : [ "--device=dri", "--share=network", "--socket=pulseaudio", "--socket=wayland" ],
