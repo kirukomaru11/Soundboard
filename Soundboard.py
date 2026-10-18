@@ -30,7 +30,9 @@ class Sound(ListObject):
     def uri(self, value):
         old_uri = self.uri
         self._uri = value
-        if old_uri: App.default.data.update(table="Sounds", column="URI", value=value, conditions="URI = ?", conds=(old_uri,))
+        if old_uri:
+            App.default.data.update(table="Sounds", column="URI", value=value, conditions="URI = ?", conds=(old_uri,))
+            Task.invoke(SOUNDS.do_dict)
 
     name = GObject.Property(type=str)
     hidden = GObject.Property(type=bool, default=False)
@@ -354,7 +356,7 @@ def main():
      } }
     App.default.add_action(Gio.SimpleAction.new_stateful("show-hidden", None, get_variant(False)))
     App.default.lookup_action("show-hidden").connect("notify::state", Window.do_filter)
-    SOUNDS = List(Sound, "uri", sorted(App.default.data.read(table="Sounds", return_dict=True, force_tuple=True), key=id_sort))
+    SOUNDS = List(Sound, unique="uri", list=sorted(App.default.data.read(table="Sounds", return_dict=True, force_tuple=True), key=id_sort), static=True)
     App.default.main(css="""
     wrap-box.main { padding: 0px 6px 6px 6px; }
     box.groups { padding: 24px; }
