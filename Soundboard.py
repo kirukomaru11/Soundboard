@@ -1,6 +1,12 @@
-from Utils import *
-
-from gi.repository import Gst
+try:
+    from Utils import *
+except ModuleNotFoundError:
+    try:
+        from .Utils import *
+    except ModuleNotFoundError:
+        print("No Utils")
+        import sys
+        sys.exit()
 
 try:
     from gi.repository import Gst
@@ -8,7 +14,7 @@ except:
     Gst = False
 if not Gst:
     print("GStreamer not found")
-    exit()
+    sys.exit()
 
 INFO = {
     "ID": "io.github.kirukomaru11.Soundboard",
