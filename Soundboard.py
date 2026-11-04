@@ -27,7 +27,6 @@ INFO = {
 }
 
 class Sound(ListObject):
-    __gtype_name__ = "Sound"
     id = GObject.Property(type=int, nick="ID", default=0)
     @GObject.Property(type=str)
     def uri(self): return getattr(self, "_uri", "")
@@ -159,8 +158,6 @@ class Editor(Adw.Dialog):
         self.close()
 
 class Context(Gtk.PopoverMenu):
-    __gtype_name__ = "Context"
-
     widget = GObject.Property(type=Gtk.Widget)
 
     def __init__(self): super().__init__(has_arrow=False, width_request=100)
