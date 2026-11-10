@@ -28,8 +28,10 @@ INFO = {
 
 class Sound(ListObject):
     id = GObject.Property(type=int, nick="ID", default=0)
-    @GObject.Property(type=str)
+    @GObject.Property(nick="URI", type=str)
     def uri(self): return getattr(self, "_uri", "")
+
+    properties = ["id", "uri", "name", "hidden"]
 
     @uri.setter
     def uri(self, value):
@@ -335,10 +337,6 @@ def shutdown(a):
 
 def id_sort(i): return i.get("ID", 0)
 
-DATA_INIT = """
-CREATE TABLE IF NOT EXISTS Sounds('ID' INTEGER, URI TEXT NOT NULL PRIMARY KEY, Name TEXT DEFAULT '', Hidden INTEGER NOT NULL DEFAULT 0);
-"""
-
 def call(dbus=None, _c=None, _s=None, _o=None, i="", m="", p=None, inv=None):
     p = p or []
     if i == App.default.get_application_id():
@@ -351,7 +349,7 @@ def call(dbus=None, _c=None, _s=None, _o=None, i="", m="", p=None, inv=None):
     return inv.return_value(None) if inv else None
 
 def main():
-    App(info=INFO, shortcuts={ "General": { "Find": "<primary>f", "Stop Search": "Escape" } }, data=DATA_INIT, activate=activate, shutdown=shutdown, actions=[("quit", App.quit_default, "<primary>q")])
+    App(info=INFO, shortcuts={ "General": { "Find": "<primary>f", "Stop Search": "Escape" } }, data=(Sound,), activate=activate, shutdown=shutdown, actions=[("quit", App.quit_default, "<primary>q")])
     Gst.init()
     global APP_DBUS, SOUNDS
     APP_DBUS = { App.default.get_application_id(): {
